@@ -1197,9 +1197,9 @@ elif section == "❓ Aide & Support":
         st.markdown("""
         **Nous sommes là pour vous aider :**
         
-        📧 **Email** : support@financelab.com
+        📧 **Email** : ibugueye@ngorweb.com
         💬 **Chat en ligne** : Disponible du lundi au vendredi, 9h-18h
-        📞 **Téléphone** : +33 1 23 45 67 89
+        📞 **Téléphone** : +33 0781536233
         
         **Heures d'ouverture :**
         - Lundi - Vendredi : 9h00 - 18h00

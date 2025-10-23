@@ -172,6 +172,7 @@ if section == "🏠 Accueil":
     <h2>🏠 Bienvenue dans FinanceLab !</h2>
     <p><strong>Votre laboratoire interactif pour maîtriser l'analyse financière</strong></p>
     </div>
+    FinanceLab est une plateforme complète d'apprentissage interactif de l'analyse financière. Que vous soyez étudiant, professionnel ou entrepreneur, maîtrisez les concepts clés grâce à des outils pratiques et des cas concrets
     """, unsafe_allow_html=True)
     
     col1, col2 = st.columns([2, 1])

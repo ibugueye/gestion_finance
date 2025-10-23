@@ -1086,7 +1086,53 @@ def show_calculateur_van_tir():
                      delta_color=delta_color)  # Utiliser delta_color au lieu de color
         with col2:
             st.metric("TIR approximatif", f"{tir*100:.1f}%")
-
+def show_calculateur_levier():
+    st.subheader("⚖️ Calculateur d'Effet de Levier Financier")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        actif_economique = st.number_input("Actif économique (€)", value=1000000, key="levier_actif")
+        resultat_exploitation = st.number_input("Résultat d'exploitation (€)", value=120000, key="levier_re")
+        capitaux_propres = st.number_input("Capitaux propres (€)", value=600000, key="levier_cp")
+    
+    with col2:
+        dettes_financieres = st.number_input("Dettes financières (€)", value=400000, key="levier_dettes")
+        taux_impot = st.number_input("Taux d'impôt (%)", value=25.0, key="levier_impot") / 100
+        taux_interet = st.number_input("Taux d'intérêt (%)", value=4.0, key="levier_interet") / 100
+    
+    # Calculs
+    re_apres_impot = resultat_exploitation * (1 - taux_impot)
+    rentabilite_economique = re_apres_impot / actif_economique
+    
+    charges_financieres = dettes_financieres * taux_interet
+    cf_apres_impot = charges_financieres * (1 - taux_impot)
+    
+    resultat_net = re_apres_impot - cf_apres_impot
+    rentabilite_financiere = resultat_net / capitaux_propres
+    
+    effet_levier = rentabilite_financiere - rentabilite_economique
+    
+    # Affichage
+    st.subheader("📈 Résultats")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.metric("Rentabilité économique", f"{rentabilite_economique*100:.1f}%")
+    
+    with col2:
+        st.metric("Rentabilité financière", f"{rentabilite_financiere*100:.1f}%")
+    
+    with col3:
+        # CORRECTION : Utiliser 'normal' pour positif et 'inverse' pour négatif
+        delta_color = "normal" if effet_levier > 0 else "inverse"
+        st.metric(
+            "Effet de levier", 
+            f"{effet_levier*100:.1f}%", 
+            delta="✅ Positif" if effet_levier > 0 else "❌ Négatif", 
+            delta_color=delta_color
+        )
 def show_calculateur_score():
     st.subheader("🎯 Calculateur de Score Financier")
     

@@ -989,14 +989,14 @@ def show_calculateur_levier():
     col1, col2 = st.columns(2)
     
     with col1:
-        actif_economique = st.number_input("Actif économique (€)", value=1000000)
-        resultat_exploitation = st.number_input("Résultat d'exploitation (€)", value=120000)
-        capitaux_propres = st.number_input("Capitaux propres (€)", value=600000)
+        actif_economique = st.number_input("Actif économique (€)", value=1000000, key="levier_actif")
+        resultat_exploitation = st.number_input("Résultat d'exploitation (€)", value=120000, key="levier_re")
+        capitaux_propres = st.number_input("Capitaux propres (€)", value=600000, key="levier_cp")
     
     with col2:
-        dettes_financieres = st.number_input("Dettes financières (€)", value=400000)
-        taux_impot = st.number_input("Taux d'impôt (%)", value=25.0) / 100
-        taux_interet = st.number_input("Taux d'intérêt (%)", value=4.0) / 100
+        dettes_financieres = st.number_input("Dettes financières (€)", value=400000, key="levier_dettes")
+        taux_impot = st.number_input("Taux d'impôt (%)", value=25.0, key="levier_impot") / 100
+        taux_interet = st.number_input("Taux d'intérêt (%)", value=4.0, key="levier_interet") / 100
     
     # Calculs
     re_apres_impot = resultat_exploitation * (1 - taux_impot)
@@ -1022,10 +1022,14 @@ def show_calculateur_levier():
         st.metric("Rentabilité financière", f"{rentabilite_financiere*100:.1f}%")
     
     with col3:
-        color = "green" if effet_levier > 0 else "red"
-        st.metric("Effet de levier", f"{effet_levier*100:.1f}%", 
-                 delta="✅ Positif" if effet_levier > 0 else "❌ Négatif", 
-                 delta_color=color)
+        # CORRECTION : Utiliser 'normal' pour positif et 'inverse' pour négatif
+        delta_color = "normal" if effet_levier > 0 else "inverse"
+        st.metric(
+            "Effet de levier", 
+            f"{effet_levier*100:.1f}%", 
+            delta="✅ Positif" if effet_levier > 0 else "❌ Négatif", 
+            delta_color=delta_color
+        )
 
 def show_calculateur_van_tir():
     st.subheader("📊 Calculateur VAN et TIR")

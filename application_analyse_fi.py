@@ -251,7 +251,7 @@ if section == "🏠 Accueil":
         st.markdown("""
         <div style="background: white; padding: 1rem; border-radius: 10px; border: 1px solid #ddd;">
         <p><em>"Grâce à FinanceLab, j'ai pu comprendre les ratios financiers qui m'échappaient depuis des années."</em></p>
-        <p><strong>Marie D., Chef d'entreprise PME</strong></p>
+        <p><strong>Demba Diogou., Chef d'entreprise PME</strong></p>
         </div>
         """, unsafe_allow_html=True)
     
@@ -259,7 +259,7 @@ if section == "🏠 Accueil":
         st.markdown("""
         <div style="background: white; padding: 1rem; border-radius: 10px; border: 1px solid #ddd;">
         <p><em>"Les cas pratiques m'ont permis d'appliquer immédiatement les concepts dans mon travail."</em></p>
-        <p><strong>Pierre L., Analyste financier</strong></p>
+        <p><strong> Kader  D., Analyste financier</strong></p>
         </div>
         """, unsafe_allow_html=True)
     
@@ -267,7 +267,7 @@ if section == "🏠 Accueil":
         st.markdown("""
         <div style="background: white; padding: 1rem; border-radius: 10px; border: 1px solid #ddd;">
         <p><em>"L'approche interactive rend l'apprentissage beaucoup plus efficace que les livres."</em></p>
-        <p><strong>Sophie M., Étudiante en master</strong></p>
+        <p><strong>Thiawta S., Étudiante en master</strong></p>
         </div>
         """, unsafe_allow_html=True)
 

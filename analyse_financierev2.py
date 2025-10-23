@@ -1033,10 +1033,11 @@ def show_calculateur_van_tir():
         
         col1, col2 = st.columns(2)
         with col1:
-            color = "green" if van > 0 else "red"
+            # CORRECTION : Utiliser 'normal' pour les valeurs positives et 'inverse' pour les négatives
+            delta_color = "normal" if van > 0 else "inverse"
             st.metric("VAN", f"{van:,.0f} €", 
                      delta="✅ Projet rentable" if van > 0 else "❌ Projet non rentable",
-                     delta_color=color)
+                     delta_color=delta_color)  # Utiliser delta_color au lieu de color
         with col2:
             st.metric("TIR approximatif", f"{tir*100:.1f}%")
 

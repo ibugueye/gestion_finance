@@ -983,53 +983,58 @@ def show_calculateur_score():
     else:
         st.error("❌ Situation risquée - Attention !")
 
-def show_calculateur_levier():
-    st.subheader("⚖️ Calculateur d'Effet de Levier Financier")
+def show_calculateur_van_tir():
+    st.subheader("📊 Calculateur VAN et TIR")
+    
+    st.write("Évaluation de la rentabilité d'un projet d'investissement")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        actif_economique = st.number_input("Actif économique (€)", value=1000000, key="levier_actif")
-        resultat_exploitation = st.number_input("Résultat d'exploitation (€)", value=120000, key="levier_re")
-        capitaux_propres = st.number_input("Capitaux propres (€)", value=600000, key="levier_cp")
+        investissement_initial = st.number_input("Investissement initial (€)", value=100000, key="van_invest")
+        duree_projet = st.number_input("Durée du projet (années)", value=5, key="van_duree")
+        taux_actualisation = st.number_input("Taux d'actualisation (%)", value=8.0, key="van_taux") / 100
     
     with col2:
-        dettes_financieres = st.number_input("Dettes financières (€)", value=400000, key="levier_dettes")
-        taux_impot = st.number_input("Taux d'impôt (%)", value=25.0, key="levier_impot") / 100
-        taux_interet = st.number_input("Taux d'intérêt (%)", value=4.0, key="levier_interet") / 100
+        st.write("Flux de trésorerie annuels")
+        flux = []
+        for i in range(duree_projet):
+            flux.append(st.number_input(f"Année {i+1} (€)", value=30000, key=f"van_flux_{i}"))
     
-    # Calculs
-    re_apres_impot = resultat_exploitation * (1 - taux_impot)
-    rentabilite_economique = re_apres_impot / actif_economique
-    
-    charges_financieres = dettes_financieres * taux_interet
-    cf_apres_impot = charges_financieres * (1 - taux_impot)
-    
-    resultat_net = re_apres_impot - cf_apres_impot
-    rentabilite_financiere = resultat_net / capitaux_propres
-    
-    effet_levier = rentabilite_financiere - rentabilite_economique
-    
-    # Affichage
-    st.subheader("📈 Résultats")
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.metric("Rentabilité économique", f"{rentabilite_economique*100:.1f}%")
-    
-    with col2:
-        st.metric("Rentabilité financière", f"{rentabilite_financiere*100:.1f}%")
-    
-    with col3:
-        # CORRECTION : Utiliser 'normal' pour positif et 'inverse' pour négatif
-        delta_color = "normal" if effet_levier > 0 else "inverse"
-        st.metric(
-            "Effet de levier", 
-            f"{effet_levier*100:.1f}%", 
-            delta="✅ Positif" if effet_levier > 0 else "❌ Négatif", 
-            delta_color=delta_color
-        )
+    if st.button("📈 Calculer VAN et TIR", key="van_btn"):
+        # Calcul VAN
+        van = -investissement_initial
+        for i, flux_annuel in enumerate(flux):
+            van += flux_annuel / ((1 + taux_actualisation) ** (i + 1))
+        
+        # Estimation TIR (méthode simplifiée)
+        def calcul_van(taux):
+            van_calc = -investissement_initial
+            for i, flux_annuel in enumerate(flux):
+                van_calc += flux_annuel / ((1 + taux) ** (i + 1))
+            return van_calc
+        
+        # Recherche du TIR par approximation
+        tir = taux_actualisation
+        for taux_test in np.arange(0.01, 1.0, 0.01):
+            if calcul_van(taux_test) >= 0:
+                tir = taux_test
+            else:
+                break
+        
+        st.subheader("🎯 Résultats")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            delta_color = "normal" if van > 0 else "inverse"
+            st.metric(
+                "VAN", 
+                f"{van:,.0f} €", 
+                delta="✅ Projet rentable" if van > 0 else "❌ Projet non rentable",
+                delta_color=delta_color
+            )
+        with col2:
+            st.metric("TIR approximatif", f"{tir*100:.1f}%")
 
 def show_calculateur_van_tir():
     st.subheader("📊 Calculateur VAN et TIR")

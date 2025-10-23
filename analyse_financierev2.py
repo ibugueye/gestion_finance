@@ -945,6 +945,43 @@ def show_calculateur_caf():
         st.success("✅ La CAF est supérieure au résultat net : bonne capacité d'autofinancement")
     else:
         st.warning("⚠️ La CAF est proche ou inférieure au résultat net : capacité d'autofinancement limitée")
+def show_calculateur_score():
+    st.subheader("🎯 Calculateur de Score Financier")
+    
+    st.write("Évaluation du risque de défaillance selon la méthode des scores")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        ebe = st.number_input("EBE (€)", value=150000, key="score_ebe")
+        endettement_global = st.number_input("Endettement global (€)", value=500000, key="score_endettement")
+        capitaux_permanents = st.number_input("Capitaux permanents (€)", value=800000, key="score_capitaux")
+    
+    with col2:
+        actif_total = st.number_input("Actif total (€)", value=1000000, key="score_actif")
+        frais_financiers = st.number_input("Frais financiers (€)", value=20000, key="score_frais_fin")
+        ca = st.number_input("Chiffre d'affaires (€)", value=1000000, key="score_ca")
+        charges_personnel = st.number_input("Charges de personnel (€)", value=350000, key="score_charges_pers")
+        valeur_ajoutee = st.number_input("Valeur ajoutée (€)", value=500000, key="score_va")
+    
+    # Calcul du score Conan et Holder
+    X1 = ebe / endettement_global if endettement_global > 0 else 0
+    X2 = capitaux_permanents / actif_total if actif_total > 0 else 0
+    X3 = 0.3  # Approximation pour réalisable et disponible
+    X4 = frais_financiers / ca if ca > 0 else 0
+    X5 = charges_personnel / valeur_ajoutee if valeur_ajoutee > 0 else 0
+    
+    score = 24*X1 + 22*X2 + 16*X3 - 87*X4 - 10*X5
+    
+    st.metric("Score financier", f"{score:.2f}")
+    
+    # Interprétation
+    if score > 9.5:
+        st.success("✅ Situation financière saine")
+    elif score > -4.5:
+        st.warning("⚠️ Situation à surveiller")
+    else:
+        st.error("❌ Situation risquée - Attention !")
 
 def show_calculateur_levier():
     st.subheader("⚖️ Calculateur d'Effet de Levier Financier")
@@ -1078,6 +1115,7 @@ def show_calculateur_score():
         st.warning("⚠️ Situation à surveiller")
     else:
         st.error("❌ Situation risquée - Attention !")
+
 
 def show_etudes_cas():
     st.markdown('<h2 class="section-header">💼 Études de Cas Pratiques</h2>', unsafe_allow_html=True)
